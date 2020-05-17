@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--status用来指定log4j本身的打印日志的级别-->
+<Configuration status="INFO" shutdownHook="disable">
+    <Properties>
+        <Property name="LOG_PATH">logs</Property>
+    </Properties>
+
+    <Appenders>
+        <!--输出到控制台-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                        pattern="%d{ISO8601} [%X{sequenceId}] [%X{X-Apelab-TraceId}] [%t] %-5level %logger{36} - %msg %n"/>
+        </Console>
+        <!--定义超过指定大小自动删除旧的创建新的的Appender-->
+        <RollingFile name="appAppender" fileName="${LOG_PATH}/app.log"
+                     filePattern="${LOG_PATH}/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <!-- NOTE：如果服没有sequenceId没有，可先放置占位符[-] -->
+            <PatternLayout
+                    pattern="%d{ISO8601} [%X{sequenceId}] [%X{X-Apelab-TraceId}] [%t] %-5level %logger{36} - %msg %n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"
+                                           modulate="true"/>
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="apiAccessLogAppender" fileName="${LOG_PATH}/api-access.log"
+                     filePattern="${LOG_PATH}/api-access-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%msg %n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"
+                                           modulate="true"/>
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <!--根据实际情况选用logger/root或者asyncLogger/asyncRoot或者组合使用(asyncLogger requires disruptor)-->
+        <asyncLogger name="api.accesslog" level="INFO" additivity="false">
+            <AppenderRef ref="apiAccessLogAppender"/>
+        </asyncLogger>
+        <AsyncRoot level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="appAppender"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

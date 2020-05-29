@@ -1,6 +1,7 @@
 package com.apelab.example.service;
 
 
+import com.apelab.example.bean.SampleVo;
 import com.apelab.example.repository.domain.SampleDomain;
 
 /**
@@ -8,10 +9,10 @@ import com.apelab.example.repository.domain.SampleDomain;
  */
 public interface SampleService {
 
-  public SampleDomain getSample(Long id) ;
+  SampleVo getSample(Long id) ;
 
-  public Long createSample(SampleDomain sample);
+  Long createSample(SampleDomain sample);
 
-  public void deleteSample(Long id) ;
+  void deleteSample(Long id) ;
 
 }

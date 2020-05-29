@@ -1,9 +1,15 @@
 package com.apelab.example.service.impl;
 
+import com.apelab.example.bean.SampleVo;
+import com.apelab.example.repository.SampleRepository;
 import com.apelab.example.repository.domain.SampleDomain;
 import com.apelab.example.service.SampleService;
+
 import java.util.concurrent.atomic.LongAdder;
+
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,26 +17,24 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class SampleServiceImpl  implements SampleService {
+public class SampleServiceImpl implements SampleService {
 
-	private LongAdder longAdder = new LongAdder();
+  @Autowired
+  private SampleRepository sampleRepository;
 
-	@Override
-	public SampleDomain getSample(Long id) {
-		return new SampleDomain("Name" + id);
-	}
+  @Override
+  public SampleVo getSample(Long id) {
+    SampleDomain sample = sampleRepository.getSample(id);
+    return sample != null ? new SampleVo(sample.getId(), sample.getName()) : null;
+  }
 
-	@Override
-	public Long createSample(SampleDomain sample) {
-		longAdder.increment();
-		Long id = longAdder.longValue();
-		log.info("Create sample, new id = {}", id);
-		return id;
-	}
+  @Override
+  public Long createSample(SampleDomain sample) {
+    return 1L;
+  }
 
-	@Override
-	public void deleteSample(Long id) {
-		log.info("Delete sample by id = {}", id);
-	}
-
+  @Override
+  public void deleteSample(Long id) {
+    log.info("Delete sample by id = {}", id);
+  }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apelab.example.repository.mapper.SampleMapper">
   <resultMap id="BaseResultMap" type="com.apelab.example.repository.domain.SampleDomain">
     <id column="id" jdbcType="BIGINT" property="id" />
@@ -12,28 +12,25 @@
     <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
   </resultMap>
 
-  <update id="updateChannelById"
-    parameterType="com.apelab.example.repository.domain.SampleDomain">
-    update channel
+  <update id="updateSampleById"
+          parameterType="com.apelab.example.repository.domain.SampleDomain">
+    update sample
     set update_by = #{updateBy,jdbcType=VARCHAR},
         delete_flag = #{deleteFlag,jdbcType=TINYINT},
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <update id="updateChannel"
-    parameterType="com.apelab.example.repository.domain.SampleDomain">
-    update channel
+  <update id="updateSample"
+          parameterType="com.apelab.example.repository.domain.SampleDomain">
+    update sample
     set update_by = #{updateBy,jdbcType=VARCHAR},
-      channel_name = #{channelName,jdbcType=VARCHAR},
-      docking_method = #{dockingMethod,jdbcType=VARCHAR},
-      auth_name = #{authName,jdbcType=VARCHAR},
-      auth_app_id = #{authAppId,jdbcType=VARCHAR}
+      name = #{channelName,jdbcType=VARCHAR},
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="selectChannel" resultMap="BaseResultMap">
+  <select id="selectSample" resultMap="BaseResultMap">
     select *
-    from channel
+    from sample
     where delete_flag = 0
     and id = #{id,jdbcType=BIGINT}
   </select>

@@ -22,6 +22,6 @@ public interface SampleMapper {
   Integer insertSample(SampleDomain sampleDomain);
 
   @SelectProvider(type = SampleProvider.class, method = "selectSamples")
-  @ResultMap("channelVo")
+  @ResultMap("BaseResultMap")
   PageList<SampleVo> selectChannels(SearchSampleReq searchSampleReq, PageBounds bounds);
 }
